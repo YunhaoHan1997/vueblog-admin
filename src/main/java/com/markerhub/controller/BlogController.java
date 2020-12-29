@@ -47,6 +47,11 @@ public class BlogController {
 
         return Result.succ(blog);
     }
+    @DeleteMapping("/deleteBlog/{id}")
+    public Result delete(@PathVariable(name = "id") Long id){
+        blogService.removeById(id);
+        return Result.succ(null);
+    }
 
     @RequiresAuthentication
     @PostMapping("/blog/edit")

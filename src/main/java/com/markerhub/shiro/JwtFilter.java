@@ -26,6 +26,13 @@ public class JwtFilter extends AuthenticatingFilter {
     @Autowired
     JwtUtils jwtUtils;
 
+    /**
+     *实现登录，我们需要生成我们自定义支持的JwtToken
+     * @param servletRequest
+     * @param servletResponse
+     * @return
+     * @throws Exception
+     */
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
 
@@ -38,6 +45,13 @@ public class JwtFilter extends AuthenticatingFilter {
         return new JwtToken(jwt);
     }
 
+    /**
+     * 拦截校验，当头部没有Authorization时候，我们直接通过，不需要自动登录；当带有的时候，首先我们校验jwt的有效性，没问题我们就直接执行executeLogin方法实现自动登录
+     * @param servletRequest
+     * @param servletResponse
+     * @return
+     * @throws Exception
+     */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
 
@@ -58,6 +72,14 @@ public class JwtFilter extends AuthenticatingFilter {
         }
     }
 
+    /**
+     * 登录异常时候进入的方法，我们直接把异常信息封装然后抛出
+     * @param token
+     * @param e
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
 
@@ -75,6 +97,13 @@ public class JwtFilter extends AuthenticatingFilter {
         return false;
     }
 
+    /**
+     * 拦截器的前置拦截，因为我们是前后端分析项目，项目中除了需要跨域全局配置之外，我们在拦截器中也需要提供跨域支持。这样，拦截器才不会在进入Controller之前就被限制了。
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
 
