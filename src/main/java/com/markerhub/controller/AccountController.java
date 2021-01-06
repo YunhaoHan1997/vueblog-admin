@@ -35,8 +35,9 @@ public class AccountController {
         if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))){
             return Result.fail("密码不正确");
         }
-        String jwt = jwtUtils.generateToken(user.getId());
 
+        //根据用户id生成jwt
+        String jwt = jwtUtils.generateToken(user.getId());
         response.setHeader("Authorization", jwt);
         response.setHeader("Access-control-Expose-Headers", "Authorization");
 
@@ -53,7 +54,7 @@ public class AccountController {
     @GetMapping("/logout")
     public Result logout() {
         SecurityUtils.getSubject().logout();
-        return Result.succ(null);
+        return Result.succ("注销成功");
     }
 
 }

@@ -49,8 +49,9 @@ public class BlogController {
     }
     @DeleteMapping("/deleteBlog/{id}")
     public Result delete(@PathVariable(name = "id") Long id){
-        blogService.removeById(id);
-        return Result.succ(null);
+        boolean result = blogService.removeById(id);
+        Assert.isTrue(result,"本文章已被删除");
+        return Result.succ("成功删除本文章");
     }
 
     @RequiresAuthentication
